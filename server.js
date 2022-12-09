@@ -65,8 +65,7 @@ MongoClient.connect(dbString, {useUnifiedTopology: true})
                 }
             )
             console.log(req.body)
-            .then(result => console.log(result))
-            .catch()
+
             // console.log(result)
         })
 
