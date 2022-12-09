@@ -19,13 +19,16 @@
 
     <div class="success-message"></div>
     
-    <div class="update-form">
-        <h2>Update</h2>
-        <form action="#" id="update"></form>
-        <input type="text" id="newname" placeholder="name" name="name">
-        <input type="text" id="newnum" placeholder="number" name="name">
-        <button type="submit" id="update">Update Customer Record</button>
-    </div>
+ 
+    <h2>Update</h2>
+
+    <form action="/details" id="update">
+        <input type="text" id="newname" placeholder="name" name="name" required="required" autocomplete="off">
+        <input type="number" id="newnum" placeholder="number" name="number" required="required">
+        <button type="submit" id="update-btn">Update Customer Record</button>
+    </form>
+
+
 
     <div class="customer-details">
         <ul>
