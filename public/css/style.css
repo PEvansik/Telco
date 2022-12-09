@@ -1,0 +1,10 @@
+h1 {
+    color: red;
+}
+
+.update-btn {
+    margin-block: 20px;
+}
+.success-message {
+    color: brown;
+}
