@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const { getAllCustomers, createCustomer, updateCustomer } = require('./services/user-service')
 const MongoClient = require('mongodb').MongoClient
 require ('dotenv').config()
 
@@ -18,60 +19,51 @@ app.use(express.urlencoded({extended: true}))
 let db,
     dbString = process.env.DB_STRING,
     dbName = 'telcocustomers';
+    
+function initServer(mongodbClient) {
+    console.log('connected to mongodb');
+    db = mongodbClient.db(dbName);
+    let customers = db.collection('telcust');
 
+    app.get('/', async (_, res) => {
+        try {
+            const allCustomers = await getAllCustomers(customers);
+            return res.render('index.ejs', {info: allCustomers});
+        } catch (err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+    });
+
+    app.post('/details', async (req,res) => {
+        const customerInformation = req.body;
+        try {
+            await createCustomer(customers, customerInformation);
+            return res.sendStatus(200);
+        } catch (err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+    });
+
+    app.put('/details', async (req, res) => {
+        const updatedCustomer = {
+            name: req.body.name,
+            number: req.body.number
+        };
+
+        try {
+            await updateCustomer(customers, updatedCustomer);
+            return res.sendStatus(200);
+        } catch (err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+    });
+
+    app.listen(PORT, console.log(`Server running on port ${PORT}`));
+}
 
 MongoClient.connect(dbString, {useUnifiedTopology: true})
-    .then(client => {
-
-        console.log('connected to mongodb')
-        db = client.db(dbName);
-        let telcust = db.collection('telcust');
-
-        // ********** GET ************
-        // serve the home page
-
-        app.get('/', (req, res) => {
-            telcust.find().toArray()
-                .then(data => {
-                    console.log(data)
-                    res.render('index.ejs', {info: data})
-                })
-                .catch(err => console.error(err))
-        })
-
-        // ********** POST ************
-        // create customers
-
-        app.post('/details', (req,res) => {
-            telcust.insertOne(req.body)
-            .then(result => {
-
-                console.log(req.body)
-
-                res.redirect('/')
-            })
-            .catch(err => console.error(err))
-        })
-
-        app.put('/details', (req, res) => {
-            telcust.findOneAndUpdate(
-                {name: ""},
-                {$set : {
-                    name: req.body.name,
-                    number: req.body.number
-                }},
-                {
-                    upsert: true
-                }
-            )
-            console.log(req.body)
-
-            // console.log(result)
-        })
-
-
-
-
-        app.listen(PORT, console.log(`Server running on port ${PORT}`))
-    })
-    .catch(err => console.error(err))
+    .then(initServer)
+    .catch(err => console.error(err));
