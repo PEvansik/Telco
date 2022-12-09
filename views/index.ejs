@@ -12,15 +12,19 @@
 
     <form action="/details" method="post" id="cusId">
         <input type="text" placeholder="name" id="cusname" name="name" class="cusname" required="required">
-        <input type="number" placeholder="quote" id="" name="number" class="cusnum" required="required">
+        <input type="number" placeholder="number" id="" name="number" class="cusnum" required="required">
 
         <button type="submit" id="sumbut">Create Customer</button>
     </form>
 
     <div class="success-message"></div>
     
-    <div class="update-btn">
-        <button type="submit">Update Customer Record</button>
+    <div class="update-form">
+        <h2>Update</h2>
+        <form action="#" id="update"></form>
+        <input type="text" id="newname" placeholder="name" name="name">
+        <input type="text" id="newnum" placeholder="number" name="name">
+        <button type="submit" id="update">Update Customer Record</button>
     </div>
 
     <div class="customer-details">
