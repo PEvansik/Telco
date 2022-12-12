@@ -8,3 +8,12 @@ h1 {
 .success-message {
     color: brown;
 }
+
+.delete-target {
+    margin-block: 20px;
+}
+
+.delete {
+    padding-block: 30px;
+}
+

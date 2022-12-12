@@ -1,30 +1,59 @@
 console.log('peep')
 const formEl = document.getElementById('cusId')
-
 let update = document.getElementById('update')
+let deleteBtn = document.querySelector('.delete')
 
-update.addEventListener('submit', handleupdate)
 
-async function handleupdate(ev) {
 
+update.addEventListener('submit', handleUpdate)
+
+deleteBtn.addEventListener('click', handleDelete)
+
+async function handleUpdate(ev) {
     ev.preventDefault()
-// get the form to submit
+
     let form = ev.currentTarget
-//  house the form in an object
     let formData = new FormData(form) 
-// get the forms URL
     let url = form.action
-// create a JS object form the form (there are other methods)
     let formBody = Object.fromEntries(formData.entries())
 
-    let options = {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formBody)
+    // let option = requestOptions('put', formBody)
+
+    try {
+        let response = await fetch(url, requestOptions('put', formBody))
+        let data = await response.json()
+        console.log(data)
+    }
+    catch{
+        err => console.error(err)
     }
 
-    let response = await fetch(url, options)
 
-    return response.json
 }
 
+async function handleDelete() {
+    let deleteTarget = document.querySelector('.delete-input').value
+    let bodyitem = {};
+    (deleteTarget) ? bodyitem.name = deleteTarget :bodyitem.name =  null;
+
+    try {
+        let response = await fetch('/deletedetails', requestOptions('delete', bodyitem))
+        let data = await response.json()
+        console.log(data)
+        location.reload()
+    }
+    catch {
+        err => console.error(err)
+    }
+
+}
+
+
+function requestOptions(verb, bodyitem) {
+    let options = {
+        method: verb,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(bodyitem)
+    }
+    return options
+}

@@ -33,14 +33,12 @@ MongoClient.connect(dbString, {useUnifiedTopology: true})
         app.get('/', (req, res) => {
             telcust.find().toArray()
                 .then(data => {
-                    console.log(data)
+                    // console.log(data)
                     res.render('index.ejs', {info: data})
                 })
                 .catch(err => console.error(err))
         })
 
-        // ********** POST ************
-        // create customers
 
         app.post('/details', (req,res) => {
             telcust.insertOne(req.body)
@@ -53,9 +51,10 @@ MongoClient.connect(dbString, {useUnifiedTopology: true})
             .catch(err => console.error(err))
         })
 
-        app.put('/details', (req, res) => {
+        app.put('/updatedetails', (req, res) => {
+            console.log(req.body)
             telcust.findOneAndUpdate(
-                {name: ""},
+                {name: null},
                 {$set : {
                     name: req.body.name,
                     number: req.body.number
@@ -64,13 +63,26 @@ MongoClient.connect(dbString, {useUnifiedTopology: true})
                     upsert: true
                 }
             )
-            console.log(req.body)
-
-            // console.log(result)
+            .then(result => {
+                console.log(result)
+                console.log(req.body.number)
+                if (!res.ok) return res.status(404)
+                return res.redirect('/')
+            })
+            .catch(err => console.error(err))
         })
 
-
-
+        app.delete('/deletedetails', (req, res) => {
+            telcust.deleteOne({
+                name: req.body.name
+            })
+            .then(data => {
+                if(!data.deletedCount) return `No ${req.body.name} record found`;
+                console.log(data)
+                return res.json(`Deleted ${req.body.name}`)
+            })
+            .catch(err => console.error(err))
+        })
 
         app.listen(PORT, console.log(`Server running on port ${PORT}`))
     })

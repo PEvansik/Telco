@@ -21,13 +21,17 @@
     
  
     <h2>Update</h2>
+    <div class="delete-target"><input type="text" class="delete-input" placeholder="enter customer to delete"></div>
 
-    <form action="/details" id="update">
+    <form action="/updatedetails" id="update">
         <input type="text" id="newname" placeholder="name" name="name" required="required" autocomplete="off">
         <input type="number" id="newnum" placeholder="number" name="number" required="required">
         <button type="submit" id="update-btn">Update Customer Record</button>
     </form>
 
+    <div class="delete">
+        <button class="delete-btn">Delete</button>
+    </div>
 
 
     <div class="customer-details">
