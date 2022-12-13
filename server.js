@@ -27,6 +27,7 @@ function initServer(mongodbClient) {
     let customers = db.collection('telcust');
 
     app.get('/', async (_, res) => {
+        
         try {
             const allCustomers = await getAllCustomers(customers);
             return res.render('index.ejs', {info: allCustomers});
@@ -37,9 +38,9 @@ function initServer(mongodbClient) {
     });
 
     app.post('/details', async (req,res) => {
-        const customerInformation = req.body;
+
         try {
-            await createCustomer(customers, customerInformation);
+            await createCustomer(customers, req.body);
             return res.sendStatus(200);
         } catch (err) {
             console.error(err);
