@@ -27,7 +27,6 @@ function initServer(mongodbClient) {
     let customers = db.collection('telcust');
 
     app.get('/', async (_, res) => {
-        
         try {
             const allCustomers = await getAllCustomers(customers);
             return res.render('index.ejs', {info: allCustomers});
@@ -38,9 +37,10 @@ function initServer(mongodbClient) {
     });
 
     app.post('/details', async (req,res) => {
+        const customerInformation = req.body;
 
         try {
-            await createCustomer(customers, req.body);
+            await createCustomer(customers, customerInformation);
             return res.sendStatus(200);
         } catch (err) {
             console.error(err);
@@ -49,9 +49,10 @@ function initServer(mongodbClient) {
     });
 
     app.put('/details', async (req, res) => {
+        const updatedCustomerDetails = req.body;
 
         try {
-            await updateCustomer(customers, req.body, 'Paul', false);
+            await updateCustomer(customers, updatedCustomerDetails, 'Paul', false);
             return res.sendStatus(200);
         } catch (err) {
             console.error(err);
@@ -60,11 +61,13 @@ function initServer(mongodbClient) {
     });
 
     app.delete('/details', async (req, res) => {
-        try {
-            let data = await removeCustomer(customers, req.body)
+        const customerToDelete = req.body;
 
-            if(data.deletedCount === 0) return res.json(`No ${req.body.name} record found`);
-            return res.json(`Deleted ${req.body.name}`)
+        try {
+            let data = await removeCustomer(customers, customerToDelete)
+
+            if(data.deletedCount === 0) return res.json(`No ${customerToDelete.name} record found`);
+            return res.json(`Deleted ${customerToDelete.name}`)
         }
         catch{err => console.error(err)}
     })
