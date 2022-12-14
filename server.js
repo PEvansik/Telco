@@ -66,10 +66,13 @@ function initServer(mongodbClient) {
         try {
             let data = await removeCustomer(customers, customerToDelete)
 
-            if(data.deletedCount === 0) return res.json(`No ${customerToDelete.name} record found`);
-            return res.json(`Deleted ${customerToDelete.name}`)
+            if(data.deletedCount === 0) return res.status(400).json(`No ${customerToDelete.name} record found`);
+            return res.status(400).json({ message: `Deleted ${customerToDelete.name}`})
         }
-        catch{err => console.error(err)}
+        catch{
+            err => console.error(err)
+            return res.status(500).json({ message: err.message });
+        }
     })
 
     app.listen(PORT, console.log(`Server running on port ${PORT}`));
