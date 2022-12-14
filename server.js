@@ -59,7 +59,7 @@ function initServer(mongodbClient) {
         }
     });
 
-    app.delete('/deletedetails', async (req, res) => {
+    app.delete('/details', async (req, res) => {
         try {
             let data = await removeCustomer(customers, req.body)
 

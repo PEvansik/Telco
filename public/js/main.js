@@ -37,7 +37,7 @@ async function handleDelete() {
     (deleteTarget) ? bodyitem.name = deleteTarget :bodyitem.name =  null;
 
     try {
-        let response = await fetch('/deletedetails', requestOptions('delete', bodyitem))
+        let response = await fetch('/details', requestOptions('delete', bodyitem))
         let data = await response.json()
         console.log(data)
         location.reload()
