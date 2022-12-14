@@ -1,4 +1,3 @@
-console.log('peep')
 const formEl = document.getElementById('cusId')
 let update = document.getElementById('update')
 let deleteBtn = document.querySelector('.delete-btn')
