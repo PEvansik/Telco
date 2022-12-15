@@ -12,12 +12,7 @@ deleteBtn.addEventListener('click', handleDelete)
 async function handleUpdate(ev) {
     ev.preventDefault()
 
-    let form = ev.currentTarget
-    let formData = new FormData(form) 
-    let url = form.action
-    let formBody = Object.fromEntries(formData.entries())
-
-    // let option = requestOptions('put', formBody)
+    formDetails(ev)
 
     try {
         let response = await fetch(url, requestOptions('put', formBody))
@@ -27,8 +22,6 @@ async function handleUpdate(ev) {
     catch{
         err => console.error(err)
     }
-
-
 }
 
 async function handleDelete() {
@@ -45,7 +38,6 @@ async function handleDelete() {
     catch {
         err => console.error(err)
     }
-
 }
 
 
@@ -56,4 +48,11 @@ function requestOptions(verb, bodyitem) {
         body: JSON.stringify(bodyitem)
     }
     return options
+}
+
+function formDetails(ev) {
+    let form = ev.currentTarget
+    let formData = new FormData(form) 
+    let url = form.action
+    let formBody = Object.fromEntries(formData.entries())
 }
