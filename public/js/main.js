@@ -5,14 +5,14 @@ let deleteBtn = document.querySelector('.delete-btn')
 
 
 
-update.addEventListener('submit', handleUpdate)
+update.addEventListener('submit', updateHandler)
 
-deleteBtn.addEventListener('click', handleDelete)
+deleteBtn.addEventListener('click', deleteHandler)
 
-async function handleUpdate(ev) {
+async function updateHandler(ev) {
     ev.preventDefault()
 
-    formDetails(ev)
+    formHandler(ev)
 
     try {
         let response = await fetch(url, requestOptions('put', formBody))
@@ -24,7 +24,7 @@ async function handleUpdate(ev) {
     }
 }
 
-async function handleDelete() {
+async function deleteHandler() {
     let deleteTarget = document.querySelector('.delete-input').value
     let bodyitem = {};
     (deleteTarget) ? bodyitem.name = deleteTarget :bodyitem.name =  null;
@@ -50,7 +50,7 @@ function requestOptions(verb, bodyitem) {
     return options
 }
 
-function formDetails(ev) {
+function formHandler(ev) {
     let form = ev.currentTarget
     let formData = new FormData(form) 
     let url = form.action
